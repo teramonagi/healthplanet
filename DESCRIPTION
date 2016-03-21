@@ -1,0 +1,14 @@
+Package: healthplanet
+Type: Package
+Version: 1.0
+Authors@R: c(person("Nagi", "Teramo", , "teramonagi@gmail.com", c("aut", "cre")))
+Title: Provides an Access to Health Planet API via R
+Description: This package provides an access to [HealthPlanet](https://www.healthplanet.jp/apis/api.html). You can get the data you stored on HealthPlanet.
+License: MIT + file LICENSE
+Imports:
+    httr,
+    rvest,
+    dplyr,
+    tidyr,
+    stringr
+RoxygenNote: 5.0.1
