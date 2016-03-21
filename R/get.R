@@ -7,6 +7,7 @@
 #' @param user_password passward on \url{https://www.healthplanet.jp/}
 #' @param client_id     client_id     for the application you registed on \url{https://www.healthplanet.jp/}
 #' @param client_secret client_secret for the application you registed on \url{https://www.healthplanet.jp/}
+#' @importFrom dplyr %>%
 #' @export
 getToken <- function(user_id, user_password, client_id, client_secret){
   #Constants
@@ -19,15 +20,15 @@ getToken <- function(user_id, user_password, client_id, client_secret){
   #Stop warnings...
   old <- options(warn = -1)
   #Login -> Accept the API -> Get the code for access token.
-  page_login <- html_session(uri)
-  form_login <- html_form(page_login)[[1]] %>% set_values(loginId=user_id, passwd=user_password)
-  page_approval <- suppressMessages(submit_form(page_login, form_login))
-  form_approval <- html_form(page_approval)[[1]] %>% set_values(approval="true")
+  page_login <- rvest::html_session(uri)
+  form_login <- rvest::html_form(page_login)[[1]] %>% rvest::set_values(loginId=user_id, passwd=user_password)
+  page_approval <- suppressMessages(rvest::submit_form(page_login, form_login))
+  form_approval <- rvest::html_form(page_approval)[[1]] %>% rvest::set_values(approval="true")
   #Adhoc for rvest pakcage to misrecognized that there is a submit form...
   form_approval$fields[[3]] <- form_approval$fields[[1]]
   form_approval$fields[[3]]$type <- "submit"
-  page_code <- suppressMessages(submit_form(page_approval, form_approval))
-  code <- html_node(page_code, "#code") %>% html_text
+  page_code <- suppressMessages(rvest::submit_form(page_approval, form_approval))
+  code <- rvest::html_node(page_code, "#code") %>% rvest::html_text(.)
   #Get Access token
   body <- list(
     client_id=client_id,
@@ -35,11 +36,11 @@ getToken <- function(user_id, user_password, client_id, client_secret){
     redirect_uri=redirect_uri,
     code=code,
     grant_type="authorization_code")
-  response <- POST(url="https://www.healthplanet.jp/oauth/token", body=body)
+  response <- httr::POST(url="https://www.healthplanet.jp/oauth/token", body=body)
   #Recover warnings
   options(old)
   #Get access token from
-  content(response)$access_token
+  httr::content(response)$access_token
 }
 
 #
@@ -70,17 +71,17 @@ getInnerScan <- function(access_token)
     tag=tag)
 
   #Get response depending on the query
-  response <- GET("https://www.healthplanet.jp/status/innerscan.json", query=query)
+  response <- httr::GET("https://www.healthplanet.jp/status/innerscan.json", query=query)
 
   #Convert the response into data.frame format in R
-  content <- content(response)
-  df <- rbind_all(content$data)
+  content <- httr::content(response)
+  df <- dplyr::bind_rows(content$data)
   df$date <- strptime(df$date, "%Y%m%d%H%M")
   df$keydata <- as.numeric(df$keydata)
-  df$tag <- str_replace_all(df$tag, table)
+  df$tag <- stringr::str_replace_all(df$tag, table)
   cbind(
     sex=content$sex,
-    birth_date=strptime(content$birth_date, "%Y%m%d"),
+    birth_date=strptime(httr::content$birth_date, "%Y%m%d"),
     heght=content$height,
-    spread(df, tag, keydata))
+    tidyr::spread(df, tag, keydata))
 }
