@@ -7,13 +7,13 @@
 getToken(user_id, user_password, client_id, client_secret)
 }
 \arguments{
-\item{user_id}{user id on [Health Planet](https://www.healthplanet.jp/)}
+\item{user_id}{user id on \url{https://www.healthplanet.jp/}}
 
-\item{user_password}{passward on [Health Planet](https://www.healthplanet.jp/)}
+\item{user_password}{passward on \url{https://www.healthplanet.jp/}}
 
-\item{client_id}{client_id for the application you registed on [Health Planet](https://www.healthplanet.jp/)}
+\item{client_id}{client_id     for the application you registed on \url{https://www.healthplanet.jp/}}
 
-\item{client_secret}{client_secret for the application you registed on [Health Planet](https://www.healthplanet.jp/)}
+\item{client_secret}{client_secret for the application you registed on \url{https://www.healthplanet.jp/}}
 }
 \description{
 Get Access Token for Health Planet API. You need to have your own account on [Health Planet](https://www.healthplanet.jp/).

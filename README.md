@@ -1,28 +1,27 @@
-# healthplanet [![CRAN Version](http://www.r-pkg.org/badges/version/RODBCDBI)](http://cran.rstudio.com/web/packages/RODBCDBI)
+# healthplanet [![CRAN Version](http://www.r-pkg.org/badges/version/healthplanet)](http://cran.rstudio.com/web/packages/healthplanet)
 
 healthplanetパッケージは[Tanita](http://www.tanita.co.jp/)により運営・提供されている[Health Planet API](https://www.healthplanet.jp/apis/api.html)のラッパーパッケージです。
+[Health Planet API](https://www.healthplanet.jp/apis/api.html)で取得できるデータをRのdata.frame形式で返却します。
+(※現在、innerscan系のデータのみ)
 
-## 使用する前に登録
-- [HealthPlanet](https://www.healthplanet.jp/)に会員登録をする
-- アプリケーションの登録を適当にすませ「Client ID」と「Client secret」を手に入れる
-
-を実行してください。
+## 使用する前に下記の登録が必要です
+- [HealthPlanet](https://www.healthplanet.jp/)への会員登録
+- 会員登録後、[HealthPlanet](https://www.healthplanet.jp/)にログインし、アプリケーションの登録を行い、「Client ID」と「Client secret」を取得
 
 ## パッケージのインストール
 
 healthplanetパッケージはCRANにはありませんが、Githubより以下のコマンドでインストール可能です。
-
 ```R
 install.packages("devtools")
 devtools::install_github("teramonagi/healthplanet")
 ```
 
-## 例
+## 使用例
 ```R
 > client_id <- "<your own client id>"
 > client_secret <- "<your own client secret>"
 > user_id <- "<HealthPlanetのID>"
-> user_password <- "HealthPalentのパスワード"
+> user_password <- "<HealthPalentのパスワード>"
 > access_token <- getToken(user_id, user_password, client_id, client_secret)
 > df <- get(access_token)
 > df

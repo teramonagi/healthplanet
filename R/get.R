@@ -3,10 +3,10 @@
 #'
 #' Get Access Token for Health Planet API. You need to have your own account on [Health Planet](https://www.healthplanet.jp/).
 #'
-#' @param user_id user id on [Health Planet](https://www.healthplanet.jp/)
-#' @param user_password passward on [Health Planet](https://www.healthplanet.jp/)
-#' @param client_id client_id for the application you registed on [Health Planet](https://www.healthplanet.jp/)
-#' @param client_secret client_secret for the application you registed on [Health Planet](https://www.healthplanet.jp/)
+#' @param user_id user id on \url{https://www.healthplanet.jp/}
+#' @param user_password passward on \url{https://www.healthplanet.jp/}
+#' @param client_id     client_id     for the application you registed on \url{https://www.healthplanet.jp/}
+#' @param client_secret client_secret for the application you registed on \url{https://www.healthplanet.jp/}
 #' @export
 getToken <- function(user_id, user_password, client_id, client_secret){
   #Constants
@@ -30,11 +30,11 @@ getToken <- function(user_id, user_password, client_id, client_secret){
   code <- html_node(page_code, "#code") %>% html_text
   #Get Access token
   body <- list(
-       client_id = client_id,
-       client_secret = client_secret,
-       redirect_uri = redirect_uri,
-       code = code,
-       grant_type="authorization_code")
+    client_id=client_id,
+    client_secret=client_secret,
+    redirect_uri=redirect_uri,
+    code=code,
+    grant_type="authorization_code")
   response <- POST(url="https://www.healthplanet.jp/oauth/token", body=body)
   #Recover warnings
   options(old)
