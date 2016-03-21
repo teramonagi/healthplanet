@@ -49,7 +49,7 @@ getToken <- function(user_id, user_password, client_id, client_secret){
 #'
 #' @param access_token the token given by getToken()
 #' @export
-get <- function(access_token)
+getInnerScan <- function(access_token)
 {
   #Constants
   #See the API document if you want to know the detail: https://www.healthplanet.jp/apis/api.html

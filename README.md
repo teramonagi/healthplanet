@@ -23,7 +23,7 @@ devtools::install_github("teramonagi/healthplanet")
 > user_id <- "<HealthPlanetのID>"
 > user_password <- "<HealthPalentのパスワード>"
 > access_token <- getToken(user_id, user_password, client_id, client_secret)
-> df <- get(access_token)
+> df <- getInnerScan(access_token)
 > df
    sex birth_date heght                date    model basal_metabolic_rate body_age body_fat bone_mass muscle_mass muscle_score visceral_fat_level weight
 1 male 1963-03-10   180 2016-03-16 06:49:00 01000099                 1685       43     20.9       3.1       56.70            0                9.5  75.60
