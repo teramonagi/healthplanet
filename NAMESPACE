@@ -2,3 +2,8 @@
 
 export(getInnerScan)
 export(getToken)
+import(dplyr)
+import(httr)
+import(rvest)
+import(stringr)
+import(tidyr)
