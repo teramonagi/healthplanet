@@ -81,6 +81,6 @@ getInnerScan <- function(access_token)
   cbind(
     sex=content$sex,
     birth_date=strptime(content$birth_date, "%Y%m%d"),
-    heght=content$height,
+    height=content$height,
     spread(df, tag, keydata))
 }
