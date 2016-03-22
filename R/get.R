@@ -3,12 +3,10 @@
 #'
 #' Get Access Token for Health Planet API. You need to have your own account on [Health Planet](https://www.healthplanet.jp/).
 #'
-#' @param user_id user id on \url{https://www.healthplanet.jp/}
-#' @param user_password passward on \url{https://www.healthplanet.jp/}
 #' @param client_id     client_id     for the application you registed on \url{https://www.healthplanet.jp/}
 #' @param client_secret client_secret for the application you registed on \url{https://www.healthplanet.jp/}
 #' @export
-getToken <- function(user_id, user_password, client_id, client_secret){
+getToken <- function(client_id, client_secret){
   #Constants
   redirect_uri <- "https://www.healthplanet.jp/success.html"
   scope <- "innerscan,sphygmomanometer,pedometer,smug"
@@ -16,28 +14,9 @@ getToken <- function(user_id, user_password, client_id, client_secret){
     "https://www.healthplanet.jp/oauth/auth?client_id=%s&redirect_uri=%s&scope=%s&response_type=code",
     client_id, redirect_uri, scope)
 
-  #Stop warnings...
-  old <- options(warn = -1)
-  #Login -> Accept the API -> Get the code for access token.
-  page_login <- html_session(uri)
-  form_login <- html_form(page_login)[[1]] %>% set_values(loginId=user_id, passwd=user_password)
-  page_approval <- suppressMessages(submit_form(page_login, form_login))
-  form_approval <- html_form(page_approval)[[1]] %>% set_values(approval="true")
-  #Adhoc for rvest pakcage to misrecognized that there is a submit form...
-  form_approval$fields[[3]] <- form_approval$fields[[1]]
-  form_approval$fields[[3]]$type <- "submit"
-  page_code <- suppressMessages(submit_form(page_approval, form_approval))
-  code <- html_node(page_code, "#code") %>% html_text
-  #Get Access token
-  body <- list(
-    client_id=client_id,
-    client_secret=client_secret,
-    redirect_uri=redirect_uri,
-    code=code,
-    grant_type="authorization_code")
-  response <- POST(url="https://www.healthplanet.jp/oauth/token", body=body)
-  #Recover warnings
-  options(old)
+  utils::browseURL(uri)
+  code <- if(exists(".rs.askForPassword")) .rs.askForPassword("Paste code here: ") else readline("Paste code here: ")
+
   #Get access token from
   content(response)$access_token
 }
