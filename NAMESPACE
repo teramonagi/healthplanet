@@ -2,6 +2,7 @@
 
 export(getInnerScan)
 export(getToken)
+export(getTokenWithoutCheck)
 import(dplyr)
 import(httr)
 import(rvest)
