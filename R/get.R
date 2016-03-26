@@ -3,19 +3,17 @@
 #'
 #' Get Access Token for Health Planet API. You need to have your own account on [Health Planet](https://www.healthplanet.jp/).
 #'
-#' @param client_id     client_id     for the application you registed on \url{https://www.healthplanet.jp/}
-#' @param client_secret client_secret for the application you registed on \url{https://www.healthplanet.jp/}
 #' @export
-getToken <- function(client_id, client_secret){
-  getTokenInner(client_id, client_secret, function(uri){
+getToken <- function(){
+  getTokenInner(function(uri){
     utils::browseURL(uri)
     if(exists(".rs.askForPassword")) .rs.askForPassword("Paste code here: ") else readline("Paste code here: ")
   })
 }
 
 #' @export
-getTokenWithoutCheck <- function(user_id, user_password, client_id, client_secret){
-  getTokenInner(client_id, client_secret, function(uri){
+getTokenWithoutCheck <- function(user_id, user_password){
+  getTokenInner(function(uri){
     #Stop warnings...
     old <- options(warn = -1)
     #Login -> Accept the API -> Get the code for access token.
@@ -31,8 +29,10 @@ getTokenWithoutCheck <- function(user_id, user_password, client_id, client_secre
   })
 }
 
-getTokenInner <- function(client_id, client_secret, getCode){
+getTokenInner <- function(getCode){
   #Constants
+  client_id <- "329.EcahSegA4b.apps.healthplanet.jp"
+  client_secret <- "1458478017380-cJjbCdWURa8JOyV3TNEWnEvd0qpvXRmGMtu8EW8m"
   redirect_uri <- "https://www.healthplanet.jp/success.html"
   scope <- "innerscan,sphygmomanometer,pedometer,smug"
   uri <- sprintf(
@@ -50,9 +50,6 @@ getTokenInner <- function(client_id, client_secret, getCode){
   #Get access token from
   content(response)$access_token
 }
-
-
-
 
 #
 #' Get the innerscan data

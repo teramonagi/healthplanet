@@ -18,10 +18,9 @@ devtools::install_github("teramonagi/healthplanet")
 
 ## 使用例
 ```R
-> client_id <- "<your own client id>"
-> client_secret <- "<your own client secret>"
 > #ブラウザ経由での認証が実行される 
-> access_token <- getToken(client_id, client_secret)
+> access_token <- getToken()
+> #一度取得したaccess_tokenは以降も使いまわしてOK
 > df <- getInnerScan(access_token)
 > df
    sex birth_date height                date    model basal_metabolic_rate body_age body_fat bone_mass muscle_mass muscle_score visceral_fat_level weight
