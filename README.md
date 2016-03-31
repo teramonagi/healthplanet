@@ -3,10 +3,11 @@
 healthplanetパッケージは[Tanita](http://www.tanita.co.jp/)により運営・提供されている[Health Planet API](https://www.healthplanet.jp/apis/api.html)のラッパーパッケージです。
 [Health Planet API](https://www.healthplanet.jp/apis/api.html)で取得できるデータをRのdata.frame形式で返却します。
 (※現在、innerscan系のデータのみ)
+(※当然ながら、データはご自身でhealthplanetにため込んでおく必要があります)
 
 ## 使用する前に下記の登録が必要です
 - [HealthPlanet](https://www.healthplanet.jp/)への会員登録
-- 会員登録後、[HealthPlanet](https://www.healthplanet.jp/)にログインし、アプリケーションの登録を行い、「Client ID」と「Client secret」を取得
+- (そこで登録したユーザIDとパスワードを覚えておく)
 
 ## パッケージのインストール
 
@@ -20,6 +21,7 @@ devtools::install_github("teramonagi/healthplanet")
 ```R
 > #ブラウザ経由での認証が実行される 
 > access_token <- getToken()
+> #getInnerScan関数により体重・体脂肪など、タニタの体重計で測定されたデータが取得できる
 > #一度取得したaccess_tokenは以降も使いまわしてOK
 > df <- getInnerScan(access_token)
 > df
