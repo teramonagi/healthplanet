@@ -19,6 +19,7 @@ devtools::install_github("teramonagi/healthplanet")
 
 ## 使用例
 ```R
+> library("healthplanet")
 > #ブラウザ経由での認証が実行される 
 > access_token <- getToken()
 > #getInnerScan関数により体重・体脂肪など、タニタの体重計で測定されたデータが取得できる
