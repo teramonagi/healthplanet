@@ -3,6 +3,7 @@
 export(getInnerScan)
 export(getToken)
 export(getTokenWithoutCheck)
+export(teramonagi)
 import(dplyr)
 import(httr)
 import(rvest)

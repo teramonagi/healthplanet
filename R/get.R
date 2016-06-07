@@ -93,3 +93,15 @@ getInnerScan <- function(access_token)
     height=content$height,
     spread(df, tag, keydata))
 }
+
+#
+#' Get teramonagi's innerscan data
+#'
+#' Get teramonagi's innerscan data via HelthPlanet API with Access Token.
+#'
+#' @export
+teramonagi <- function()
+{
+  access_token <- "1465333676008/JX2exlpcAyPQr9V9kGxOb2cwNJfeT5B5aBGGtPsi"
+  getInnerScan(access_token)
+}
