@@ -58,6 +58,9 @@ getTokenInner <- function(getCode){
 #'
 #' @param access_token the token given by getToken()
 #' @export
+#' @importFrom dplyr rbind_all
+#' @importFrom stringr str_replace_all
+#' @importFrom tidyr spread
 getInnerScan <- function(access_token)
 {
   #Constants
@@ -83,15 +86,15 @@ getInnerScan <- function(access_token)
 
   #Convert the response into data.frame format in R
   content <- content(response)
-  df <- rbind_all(content$data)
+  df <- dplyr::rbind_all(content$data)
   df$date <- strptime(df$date, "%Y%m%d%H%M")
   df$keydata <- as.numeric(df$keydata)
-  df$tag <- str_replace_all(df$tag, table)
+  df$tag <- stringr::str_replace_all(df$tag, table)
   cbind(
     sex=content$sex,
     birth_date=strptime(content$birth_date, "%Y%m%d"),
     height=content$height,
-    spread(df, tag, keydata))
+    tidyr::spread(df, tag, keydata))
 }
 
 #

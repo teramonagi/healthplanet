@@ -4,5 +4,5 @@
 #'
 #' @name healthplanet
 #' @docType package
-#' @import httr rvest dplyr tidyr stringr
+#' @import httr rvest
 NULL
