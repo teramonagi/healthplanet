@@ -95,12 +95,12 @@ getInnerScan <- function(access_token)
 }
 
 #
-#' Get teramonagi's innerscan data
+#' Get Shinichi Takayanagi's innerscan data
 #'
-#' Get teramonagi's innerscan data via HelthPlanet API with Access Token.
+#' Get Shinichi Takayanagi's innerscan data via HelthPlanet API with Access Token.
 #'
 #' @export
-teramonagi <- function()
+stakaya <- function()
 {
   access_token <- "1465333676008/JX2exlpcAyPQr9V9kGxOb2cwNJfeT5B5aBGGtPsi"
   getInnerScan(access_token)
