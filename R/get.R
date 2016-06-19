@@ -106,5 +106,7 @@ getInnerScan <- function(access_token)
 stakaya <- function()
 {
   access_token <- "1465333676008/JX2exlpcAyPQr9V9kGxOb2cwNJfeT5B5aBGGtPsi"
-  getInnerScan(access_token)
+  res <- getInnerScan(access_token)
+  res$height=174
+  res
 }
