@@ -93,7 +93,7 @@ getInnerScan <- function(access_token)
   cbind(
     sex=content$sex,
     birth_date=strptime(content$birth_date, "%Y%m%d"),
-    height=content$height,
+    height=as.numeric(content$height),
     tidyr::spread(df, tag, keydata))
 }
 
