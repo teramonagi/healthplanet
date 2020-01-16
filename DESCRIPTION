@@ -11,8 +11,10 @@ Imports:
     httr,
     rvest,
     dplyr,
+    magrittr,
     tidyr,
     glue,
+    lubridate,
     stringr
 RoxygenNote: 7.0.2
 Suggests: knitr,

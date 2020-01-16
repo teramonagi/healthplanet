@@ -54,25 +54,42 @@ auth_url <- function(client_id){
 #'
 #' @param access_token the token given by getToken()
 #' @export
-innerscan <- function(token)
+innerscan <- function(token, from=NULL, to=NULL){
+  to <- to_date(if_null(to, Sys.Date()))
+  from <- to_date(if_null(from, Sys.Date() - months(3)))
+  # We can only get 3 months duratio data per request
+  x <- unique(c(seq.Date(from=from, to=to, by=80), to))
+  # Include `to` date's data (both side included)
+  x[length(x)] <- x[length(x)] + lubridate::days(1)
+  result <- purrr::map2_df(x[-length(x)], x[-1], ~ innerscan_inner(token, .x, .y))
+  # rearranging columns
+  cbind(
+      dplyr::select(result, -c(sex, height, birth_date)),
+      dplyr::select(result, sex, height, birth_date)
+  )
+}
+innerscan_inner <- function(token, from, to)
 {
   #Constants
   #See the API document if you want to know the detail: https://www.healthplanet.jp/apis/api.html
-  tag <- "6021,6022,6023,6024,6025,6026,6027,6028,6029"
   table <- c(
-  "6021"="weight",
-  "6022"="body_fat",
-  "6023"="muscle_mass",
-  "6024"="muscle_score",
-  "6025"="visceral_fat_level",
-  "6026"="visceral fat level",
-  "6027"="basal_metabolic_rate",
-  "6028"="body_age",
-  "6029"="bone_mass")
+    "6021"="weight",
+    "6022"="body_fat",
+    "6023"="muscle_mass",
+    "6024"="muscle_score",
+    "6025"="visceral_fat_level",
+    "6026"="visceral_fat_level",
+    "6027"="basal_metabolic_rate",
+    "6028"="body_age",
+    "6029"="bone_mass"
+  )
   query <- list(
     access_token=token,
     date="1",
-    tag=paste(names(table), collapse = ","))
+    from=format(from, "%Y%m%d%H%M%S"),
+    to=format(to, "%Y%m%d%H%M%S"),
+    tag=paste(names(table), collapse = ",")
+  )
 
   #Get response depending on the query
   response <- httr::GET("https://www.healthplanet.jp/status/innerscan.json", query=query)
@@ -80,14 +97,24 @@ innerscan <- function(token)
   #Convert the response into data.frame format in R
   content <- httr::content(response)
   df <- dplyr::bind_rows(content$data)
-  df$date <- as.POSIXct(strptime(df$date, "%Y%m%d%H%M"))
-  df$keydata <- as.numeric(df$keydata)
-  df$tag <- stringr::str_replace_all(df$tag, table)
-  cbind(
-    sex=content$sex,
-    birth_date=strptime(content$birth_date, "%Y%m%d"),
-    height=as.numeric(content$height),
-    tidyr::pivot_wider(df, names_from = tag, values_from=keydata))
+  if(nrow(df) > 0){
+    df$date <- as.POSIXct(strptime(df$date, "%Y%m%d%H%M"))
+    df$keydata <- as.numeric(df$keydata)
+    df$tag <- stringr::str_replace_all(df$tag, table)
+    df <- dplyr::group_by(df, date, tag) %>%
+      dplyr::mutate(row = row_number()) %>%
+      tidyr::pivot_wider(names_from=tag, values_from=keydata) %>%
+      dplyr::select(-row)
+    result <- cbind(
+      as.data.frame(df),
+      sex=content$sex,
+      height=as.numeric(content$height),
+      birth_date=strptime(content$birth_date, "%Y%m%d")
+    )
+    dplyr::arrange(result, date)
+  } else{
+    NULL
+  }
 }
 
 #
@@ -96,8 +123,24 @@ innerscan <- function(token)
 #' Get Shinichi Takayanagi's innerscan data via HelthPlanet API with Access Token.
 #'
 #' @export
-stakaya <- function()
+stakaya <- function(from=NULL, to=NULL)
 {
   token <- "1579156185763/66CktVaYJoijpcv4xpa6spQbVB7J6ZKdysduOg6v"
-  innerscan(token)
+  innerscan(token, from=from, to=to)
+}
+
+if_null <- function(x, value){
+  if(is.null(x)){
+    value
+  } else{
+    x
+  }
+}
+
+to_date <- function(x){
+  if(lubridate::is.Date(x)){
+    x
+  } else{
+    lubridate::ymd(x)
+  }
 }
