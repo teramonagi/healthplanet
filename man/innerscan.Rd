@@ -4,7 +4,7 @@
 \alias{innerscan}
 \title{Get the innerscan data}
 \usage{
-innerscan(token)
+innerscan(token, from = NULL, to = NULL)
 }
 \arguments{
 \item{access_token}{the token given by getToken()}

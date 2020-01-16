@@ -4,7 +4,7 @@
 \alias{stakaya}
 \title{Get Shinichi Takayanagi's innerscan data}
 \usage{
-stakaya()
+stakaya(from = NULL, to = NULL)
 }
 \description{
 Get Shinichi Takayanagi's innerscan data via HelthPlanet API with Access Token.

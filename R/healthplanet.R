@@ -5,3 +5,6 @@
 #' @name healthplanet
 #' @docType package
 NULL
+
+# To use these operators inside this package, we have to do like this
+`%>%` <- magrittr::`%>%`
