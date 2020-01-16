@@ -3,9 +3,7 @@
 \docType{package}
 \name{healthplanet}
 \alias{healthplanet}
-\alias{healthplanet-package}
 \title{healthplanet}
 \description{
 Provides an Access to Health Planet API via R
 }
-

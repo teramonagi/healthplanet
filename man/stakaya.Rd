@@ -9,4 +9,3 @@ stakaya()
 \description{
 Get Shinichi Takayanagi's innerscan data via HelthPlanet API with Access Token.
 }
-

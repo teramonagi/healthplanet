@@ -4,5 +4,4 @@
 #'
 #' @name healthplanet
 #' @docType package
-#' @import httr rvest
 NULL
