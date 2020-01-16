@@ -21,10 +21,10 @@ devtools::install_github("teramonagi/healthplanet")
 ```R
 > library("healthplanet")
 > #ブラウザ経由での認証が実行される 
-> access_token <- getToken()
-> #getInnerScan関数により体重・体脂肪など、タニタの体重計で測定されたデータが取得できる
+> access_token <- get_token()
+> #innerscan()により体重・体脂肪など、タニタの体重計で測定されたデータが取得できる
 > #一度取得したaccess_tokenは以降も使いまわしてOK
-> df <- getInnerScan(access_token)
+> df <- innerscan(access_token)
 > df
    sex birth_date height                date    model basal_metabolic_rate body_age body_fat bone_mass muscle_mass muscle_score visceral_fat_level weight
 1 male 1963-03-10   180 2016-03-16 06:49:00 01000099                 1685       43     20.9       3.1       56.70            0                9.5  75.60
